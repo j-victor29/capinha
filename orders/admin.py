@@ -4,8 +4,8 @@ from .models import Pedido, ItemPedido
 # Register your models here.
 @admin.register(Pedido)
 class PedidoAdmin(admin.ModelAdmin):
-    list_display = ('id', 'usuario', 'status_pedido', 'valor_total', 'data_criacao')
-    list_filter = ('status_pedido', 'data_criacao')
+    list_display = ('id', 'usuario', 'status_pedido', 'valor_total', 'data_pedido')
+    list_filter = ('status_pedido', 'data_pedido')
     search_fields = ('usuario__username',)
 
 @admin.register(ItemPedido)
