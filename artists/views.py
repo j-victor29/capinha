@@ -1,3 +1,16 @@
 from django.shortcuts import render
 
 # Create your views here.
+
+from rest_framework.viewsets import ModelViewSet
+from rest_framework.permissions import IsAuthenticated
+from .models import Artista
+from .seralizers import ArtistaSerializer
+
+class ArtistaViewSet(ModelViewSet):
+    queryset = Artista.objects.filter(ativo=True)
+    serializer_class = ArtistaSerializer
+    permission_classes = [IsAuthenticated]
+
+    def perform_create(self, serializer):
+        serializer.save(usuario=self.request.user)

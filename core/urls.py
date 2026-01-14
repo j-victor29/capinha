@@ -24,3 +24,7 @@ urlpatterns = [
 urlpatterns = [
     path("api/", include("orders.urls")),
 ]
+
+urlpatterns = [
+    path('api/artists/', include('artists.urls')),
+]
