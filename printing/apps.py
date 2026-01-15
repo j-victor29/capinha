@@ -1,6 +1,6 @@
-from django.apps import AppConfig
+# from django.apps import AppConfig
 
-
-class PrintingConfig(AppConfig):
-    default_auto_field = 'django.db.models.BigAutoField'
-    name = 'printing'
+#class PrintingConfig(AppConfig):
+#    default_auto_field = 'django.db.models.BigAutoField'
+#    name = 'printing'
+#    verbose_name = 'Produção e Impressão'
