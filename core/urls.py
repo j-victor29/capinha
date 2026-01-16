@@ -22,6 +22,7 @@ urlpatterns = [
     path("api/", include("orders.urls")),
     path('artists/', include('artists.urls')),
     path('creations/', include('creations.urls')),
+    path('gamification/', include('gamification.urls')),
 ]
 # NÃO MEXA ISSO AQUI QUE ESTÁ COMENTADO!!!!
 # urlpatterns = [
