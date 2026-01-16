@@ -23,7 +23,8 @@ urlpatterns = [
     path('artists/', include('artists.urls')),
     path('creations/', include('creations.urls')),
     path('gamification/', include('gamification.urls')),
-    path('api/users/', include('users.urls')),
+    path('users/', include('users.urls')),
+    path('api/printing/', include('printing.urls')),
 ]
 # NÃO MEXA ISSO AQUI QUE ESTÁ COMENTADO!!!!
 # urlpatterns = [

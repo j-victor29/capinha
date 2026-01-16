@@ -1,6 +1,7 @@
 from django.db import models
 
 
+
 class Impressora(models.Model):
     TIPO_CHOICES = [
         ('uv', 'Impressora UV'),

@@ -7,7 +7,12 @@ from django.contrib.auth import authenticate
 from .models import user
 from .serializers import UserListSerializer, UserDetailSerializer, UserCreateSerializer
 
-# Create your views here.
+
+def user_list_view(request):
+    """View de template para listar usuários"""
+    users = User.objects.all()
+    return render(request, 'users/user_list.html', {'users': users})
+
 
 class UserViewSet(viewsets.ModelViewSet):
     queryset = user.objects.all()
