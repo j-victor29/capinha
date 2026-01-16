@@ -10,7 +10,7 @@ from .serializers import UserListSerializer, UserDetailSerializer, UserCreateSer
 
 def user_list_view(request):
     """View de template para listar usuários"""
-    users = User.objects.all()
+    users = user.objects.all()
     return render(request, 'users/user_list.html', {'users': users})
 
 
