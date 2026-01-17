@@ -3,7 +3,8 @@ from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, AllowAny
-from django.contrib.auth import authenticate
+from django.contrib.auth.hashers import make_password, check_password
+from typing import Optional
 from .models import user
 from .serializers import UserListSerializer, UserDetailSerializer, UserCreateSerializer
 
@@ -17,6 +18,13 @@ def user_list_view(request):
 class UserViewSet(viewsets.ModelViewSet):
     queryset = user.objects.all()
     permission_classes = [IsAuthenticated]
+    
+    def get_usuario_autenticado(self, request) -> Optional['user']:
+        """Obtém o usuário autenticado do modelo customizado"""
+        try:
+            return user.objects.get(email=request.user.email)
+        except user.DoesNotExist:
+            return None
     
     def get_serializer_class(self):
         if self.action == 'create':
@@ -33,22 +41,40 @@ class UserViewSet(viewsets.ModelViewSet):
     @action(detail=False, methods=['get'], permission_classes=[IsAuthenticated])
     def perfil(self, request):
         """Retorna dados do usuário autenticado"""
-        serializer = UserDetailSerializer(request.user)
+        usuario = self.get_usuario_autenticado(request)
+        if not usuario:
+            return Response(
+                {'erro': 'Usuário não encontrado'},
+                status=status.HTTP_404_NOT_FOUND
+            )
+        serializer = UserDetailSerializer(usuario)
         return Response(serializer.data)
     
     @action(detail=False, methods=['post'], permission_classes=[IsAuthenticated])
     def alterar_senha(self, request):
         """Altera a senha do usuário autenticado"""
-        user = request.user
+        usuario = self.get_usuario_autenticado(request)
+        if not usuario:
+            return Response(
+                {'erro': 'Usuário não encontrado'},
+                status=status.HTTP_404_NOT_FOUND
+            )
+        
         senha_atual = request.data.get('senha_atual')
         senha_nova = request.data.get('senha_nova')
         
-        if not authenticate(username=user.username, password=senha_atual):
+        if not senha_atual or not senha_nova:
+            return Response(
+                {'erro': 'Senha atual e nova são obrigatórias'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        if not check_password(senha_atual, usuario.senha):
             return Response(
                 {'erro': 'Senha atual incorreta'},
                 status=status.HTTP_400_BAD_REQUEST
             )
         
-        user.set_password(senha_nova)
-        user.save()
+        usuario.senha = make_password(senha_nova)
+        usuario.save()
         return Response({'mensagem': 'Senha alterada com sucesso'})

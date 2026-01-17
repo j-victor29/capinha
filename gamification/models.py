@@ -1,5 +1,5 @@
 from django.db import models
-from users.models import User
+from users.models import user
 
 class Recompensa(models.Model):
     nome = models.CharField(max_length=100)
@@ -10,7 +10,7 @@ class Recompensa(models.Model):
         return self.nome
     
 class UsuarioRecompensa(models.Model):
-    usuario = models.ForeignKey(User, on_delete=models.CASCADE)
+    usuario = models.ForeignKey(user, on_delete=models.CASCADE)
     recompensa = models.ForeignKey(Recompensa, on_delete=models.CASCADE)
     data_recompensa = models.DateTimeField(auto_now_add=True)
 

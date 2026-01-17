@@ -51,7 +51,7 @@ class UserDetailSerializer(serializers.ModelSerializer):
             'telefones',
         ]
 
-    def get_telefones(self, obj):
+    def get_telefones(self, obj):  # type: ignore
         telefones = obj.telefones.all()
         return UserTelefoneSerializer(telefones, many=True).data
 

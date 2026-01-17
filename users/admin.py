@@ -1,25 +1,33 @@
 from django.contrib import admin
-from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
-from .models import user
+from .models import user, userTelefone, Tipouser
+
+
+@admin.register(Tipouser)
+class TipouserAdmin(admin.ModelAdmin):
+    list_display = ['id', 'nome']
+    search_fields = ['nome']
 
 
 @admin.register(user)
-class UserAdmin(BaseUserAdmin):
-    fieldsets = BaseUserAdmin.fieldsets + (
-        ('Informações Adicionais', {
-            'fields': ('telefone', 'endereco', 'cidade', 'estado', 'cep', 'data_criacao')
-        }),
-    )
-    
-    list_display = ['username', 'email', 'first_name', 'last_name', 'telefone', 'cidade', 'is_active', 'data_criacao']
-    list_filter = ['is_active', 'is_staff', 'cidade', 'data_criacao']
-    search_fields = ['username', 'email', 'telefone', 'cidade']
-    readonly_fields = ['data_criacao']
+class UserAdmin(admin.ModelAdmin):
+    list_display = ['id', 'nome', 'email', 'status', 'data_cadastro', 'tipo_usuario']
+    list_filter = ['status', 'data_cadastro', 'tipo_usuario']
+    search_fields = ['nome', 'email']
+    readonly_fields = ['data_cadastro']
     
     fieldsets = (
-        (None, {'fields': ('username', 'password')}),
-        ('Informações Pessoais', {'fields': ('first_name', 'last_name', 'email')}),
-        ('Contato', {'fields': ('telefone', 'endereco', 'cidade', 'estado', 'cep')}),
-        ('Permissões', {'fields': ('is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions')}),
-        ('Datas', {'fields': ('last_login', 'data_criacao')}),
+        ('Informações Básicas', {'fields': ('nome', 'email', 'status')}),
+        ('Tipo de Usuário', {'fields': ('tipo_usuario',)}),
+        ('Data', {'fields': ('data_cadastro',)}),
+    )
+
+
+@admin.register(userTelefone)
+class UserTelefoneAdmin(admin.ModelAdmin):
+    list_display = ['id', 'usuario', 'numero_telefone', 'tipo_telefone']
+    list_filter = ['tipo_telefone', 'usuario']
+    search_fields = ['usuario__nome', 'numero_telefone']
+    
+    fieldsets = (
+        ('Informações', {'fields': ('usuario', 'numero_telefone', 'tipo_telefone')}),
     )

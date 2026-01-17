@@ -24,7 +24,7 @@ class user(models.Model):
     )
 
     def __str__(self):
-        return self.nome_usuario
+        return self.nome
     
 class userTelefone(models.Model):
     usuario = models.ForeignKey(user,
@@ -35,4 +35,4 @@ class userTelefone(models.Model):
     tipo_telefone = models.CharField(max_length=20)  # celular, fixo, whatsapp
 
     def __str__(self):
-        return f"{self.numero_telefone} - {self.usuario.nome_usuario}"
+        return f"{self.numero_telefone} - {self.usuario.nome}"
