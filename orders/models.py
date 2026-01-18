@@ -1,7 +1,7 @@
 from django.db import models
 from django.core.validators import MinValueValidator
 from django.utils import timezone
-
+from decimal import Decimal
 
 class Pedido(models.Model):
     STATUS_CHOICES = [
@@ -20,9 +20,9 @@ class Pedido(models.Model):
     ]
     
     id = models.AutoField(primary_key=True)
-    usuario = models.ForeignKey('users.User', on_delete=models.PROTECT, related_name='pedidos')
+    usuario = models.ForeignKey('users.user', on_delete=models.PROTECT, related_name='pedidos')
     status_pedido = models.CharField(max_length=20, choices=STATUS_CHOICES, default='criado')
-    valor_total = models.DecimalField(max_digits=10, decimal_places=2, default=0, validators=[MinValueValidator(0)])
+    valor_total = models.DecimalField(max_digits=10, decimal_places=2, default=Decimal('0.00'), validators=[MinValueValidator(0)])
     data_pedido = models.DateTimeField(auto_now_add=True)
     forma_pagamento = models.CharField(max_length=20, choices=FORMA_PAGAMENTO_CHOICES, null=True, blank=True)
     status_pagamento = models.CharField(max_length=20, null=True, blank=True)
