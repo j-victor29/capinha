@@ -1,0 +1,177 @@
+{% extends "base.html" %}
+
+{% block title %}Pedido #{{ pedido.id }} - Capinha{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row mb-4">
+        <div class="col-md-8">
+            <h1>Pedido #{{ pedido.id }}</h1>
+            <p class="text-muted">
+                Criado em {{ pedido.data_pedido|date:"d/m/Y H:i" }}
+            </p>
+        </div>
+        <div class="col-md-4 text-end">
+            <a href="{% url 'pedido-list' %}" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> Voltar
+            </a>
+        </div>
+    </div>
+
+    <!-- Status do Pedido -->
+    <div class="card mb-4">
+        <div class="card-header bg-dark">
+            <h5 class="mb-0">Status do Pedido</h5>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <p><strong>Status Atual:</strong></p>
+                    {% if pedido.status_pedido == 'criado' %}
+                        <span class="badge bg-warning" style="font-size: 1rem;">Criado</span>
+                    {% elif pedido.status_pedido == 'pago' %}
+                        <span class="badge bg-info" style="font-size: 1rem;">Pago</span>
+                    {% elif pedido.status_pedido == 'em_producao' %}
+                        <span class="badge bg-primary" style="font-size: 1rem;">Em Produção</span>
+                    {% elif pedido.status_pedido == 'impresso' %}
+                        <span class="badge bg-secondary" style="font-size: 1rem;">Impresso</span>
+                    {% elif pedido.status_pedido == 'enviado' %}
+                        <span class="badge bg-success" style="font-size: 1rem;">Enviado</span>
+                    {% elif pedido.status_pedido == 'concluido' %}
+                        <span class="badge bg-success" style="font-size: 1rem;">Concluído</span>
+                    {% elif pedido.status_pedido == 'cancelado' %}
+                        <span class="badge bg-danger" style="font-size: 1rem;">Cancelado</span>
+                    {% endif %}
+                </div>
+                <div class="col-md-6">
+                    <p><strong>Valor Total:</strong></p>
+                    <h4 class="text-success">R$ {{ pedido.valor_total|floatformat:2 }}</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Timeline de Status -->
+    <div class="card mb-4">
+        <div class="card-header bg-dark">
+            <h5 class="mb-0">Timeline</h5>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    {% if pedido.data_pagamento %}
+                        <p><strong>Pagamento:</strong></p>
+                        <p>{{ pedido.data_pagamento|date:"d/m/Y H:i" }}</p>
+                    {% else %}
+                        <p><strong>Pagamento:</strong> <em class="text-muted">Pendente</em></p>
+                    {% endif %}
+                </div>
+                <div class="col-md-6">
+                    {% if pedido.data_producao %}
+                        <p><strong>Produção Iniciada:</strong></p>
+                        <p>{{ pedido.data_producao|date:"d/m/Y H:i" }}</p>
+                    {% else %}
+                        <p><strong>Produção Iniciada:</strong> <em class="text-muted">Pendente</em></p>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    {% if pedido.data_impressao %}
+                        <p><strong>Impressão:</strong></p>
+                        <p>{{ pedido.data_impressao|date:"d/m/Y H:i" }}</p>
+                    {% else %}
+                        <p><strong>Impressão:</strong> <em class="text-muted">Pendente</em></p>
+                    {% endif %}
+                </div>
+                <div class="col-md-6">
+                    {% if pedido.data_envio %}
+                        <p><strong>Envio:</strong></p>
+                        <p>{{ pedido.data_envio|date:"d/m/Y H:i" }}</p>
+                    {% else %}
+                        <p><strong>Envio:</strong> <em class="text-muted">Pendente</em></p>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    {% if pedido.data_conclusao %}
+                        <p><strong>Conclusão:</strong></p>
+                        <p>{{ pedido.data_conclusao|date:"d/m/Y H:i" }}</p>
+                    {% else %}
+                        <p><strong>Conclusão:</strong> <em class="text-muted">Pendente</em></p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Informações do Pedido -->
+    <div class="card mb-4">
+        <div class="card-header bg-dark">
+            <h5 class="mb-0">Informações</h5>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <p><strong>Usuário:</strong> {{ pedido.usuario.nome }}</p>
+                    <p><strong>Email:</strong> {{ pedido.usuario.email }}</p>
+                </div>
+                <div class="col-md-6">
+                    <p>
+                        <strong>Artista:</strong>
+                        {% if pedido.artista %}
+                            {{ pedido.artista.nome_artistico }}
+                        {% else %}
+                            <em class="text-muted">-</em>
+                        {% endif %}
+                    </p>
+                    {% if pedido.forma_pagamento %}
+                        <p><strong>Forma de Pagamento:</strong> {{ pedido.get_forma_pagamento_display }}</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Itens do Pedido -->
+    <div class="card">
+        <div class="card-header bg-dark">
+            <h5 class="mb-0">Itens do Pedido</h5>
+        </div>
+        <div class="card-body">
+            {% if itens %}
+                <div class="table-responsive">
+                    <table class="table table-sm">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Produto</th>
+                                <th>Quantidade</th>
+                                <th>Preço Unit.</th>
+                                <th>Subtotal</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in itens %}
+                                <tr>
+                                    <td>
+                                        <strong>{{ item.produto.nome }}</strong>
+                                        {% if item.personalizacao %}
+                                            <br><small class="text-muted">Personalizado</small>
+                                        {% endif %}
+                                    </td>
+                                    <td>{{ item.quantidade }}</td>
+                                    <td>R$ {{ item.preco_unitario|floatformat:2 }}</td>
+                                    <td><strong>R$ {{ item.subtotal|floatformat:2 }}</strong></td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <p class="text-muted">Este pedido não possui itens.</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
