@@ -1,0 +1,293 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Home - Capinha{% endblock %}
+
+{% block content %}
+<div class="container-fluid min-vh-100 d-flex align-items-center">
+    <div class="container">
+        
+        <!-- Seção Hero -->
+        <div class="row mb-5 pb-5">
+            <div class="col-lg-10 mx-auto text-center">
+                <div class="hero-content">
+                    <h1 class="display-3 fw-bold mb-4 text-gradient">
+                        <i class="fas fa-paint-brush me-3 text-primary"></i>
+                        Bem-vindo ao Capinha!
+                    </h1>
+                    <p class="lead text-muted mb-4">
+                        Plataforma completa para criação, personalização e impressão de produtos personalizados
+                    </p>
+                    <div class="d-flex gap-3 justify-content-center">
+                        <a href="{% url 'creations-home' %}" class="btn btn-primary btn-lg">
+                            <i class="fas fa-palette me-2"></i>Explorar Criações
+                        </a>
+                        <a href="{% url 'colecao-list' %}" class="btn btn-outline-primary btn-lg">
+                            <i class="fas fa-images me-2"></i>Ver Coleções
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Grid de Módulos -->
+        <div class="row g-4 mb-5">
+            
+            <!-- Card: Creations -->
+            <div class="col-md-6 col-lg-4">
+                <div class="module-card h-100 shadow-sm border-0 rounded-lg overflow-hidden">
+                    <div class="module-header bg-primary bg-opacity-10 p-4 text-center">
+                        <i class="fas fa-palette fa-3x text-primary"></i>
+                    </div>
+                    <div class="card-body p-4">
+                        <h5 class="card-title fw-bold mb-3">Criações</h5>
+                        <p class="card-text text-muted small mb-4">
+                            Explore coleções de artes, veja designs e personalize seus produtos favoritos.
+                        </p>
+                        <a href="{% url 'creations-home' %}" class="btn btn-sm btn-primary w-100">
+                            <i class="fas fa-arrow-right me-2"></i>Acessar
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card: Produtos -->
+            <div class="col-md-6 col-lg-4">
+                <div class="module-card h-100 shadow-sm border-0 rounded-lg overflow-hidden">
+                    <div class="module-header bg-success bg-opacity-10 p-4 text-center">
+                        <i class="fas fa-box fa-3x text-success"></i>
+                    </div>
+                    <div class="card-body p-4">
+                        <h5 class="card-title fw-bold mb-3">Produtos</h5>
+                        <p class="card-text text-muted small mb-4">
+                            Conheça nossa linha de produtos disponíveis para personalização.
+                        </p>
+                        <a href="/products/" class="btn btn-sm btn-success w-100">
+                            <i class="fas fa-arrow-right me-2"></i>Acessar
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card: Pedidos -->
+            <div class="col-md-6 col-lg-4">
+                <div class="module-card h-100 shadow-sm border-0 rounded-lg overflow-hidden">
+                    <div class="module-header bg-info bg-opacity-10 p-4 text-center">
+                        <i class="fas fa-shopping-cart fa-3x text-info"></i>
+                    </div>
+                    <div class="card-body p-4">
+                        <h5 class="card-title fw-bold mb-3">Pedidos</h5>
+                        <p class="card-text text-muted small mb-4">
+                            Gerencie seus pedidos, acompanhe o status e histórico de compras.
+                        </p>
+                        <a href="/orders/" class="btn btn-sm btn-info w-100">
+                            <i class="fas fa-arrow-right me-2"></i>Acessar
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card: Artistas -->
+            <div class="col-md-6 col-lg-4">
+                <div class="module-card h-100 shadow-sm border-0 rounded-lg overflow-hidden">
+                    <div class="module-header bg-warning bg-opacity-10 p-4 text-center">
+                        <i class="fas fa-user-tie fa-3x text-warning"></i>
+                    </div>
+                    <div class="card-body p-4">
+                        <h5 class="card-title fw-bold mb-3">Artistas</h5>
+                        <p class="card-text text-muted small mb-4">
+                            Explore artistas incríveis e suas criações exclusivas.
+                        </p>
+                        <a href="/artists/" class="btn btn-sm btn-warning w-100">
+                            <i class="fas fa-arrow-right me-2"></i>Acessar
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card: Pagamentos -->
+            <div class="col-md-6 col-lg-4">
+                <div class="module-card h-100 shadow-sm border-0 rounded-lg overflow-hidden">
+                    <div class="module-header bg-danger bg-opacity-10 p-4 text-center">
+                        <i class="fas fa-credit-card fa-3x text-danger"></i>
+                    </div>
+                    <div class="card-body p-4">
+                        <h5 class="card-title fw-bold mb-3">Pagamentos</h5>
+                        <p class="card-text text-muted small mb-4">
+                            Gerencie pagamentos, faturas e métodos de pagamento.
+                        </p>
+                        <a href="/payments/" class="btn btn-sm btn-danger w-100">
+                            <i class="fas fa-arrow-right me-2"></i>Acessar
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card: Gamificação -->
+            <div class="col-md-6 col-lg-4">
+                <div class="module-card h-100 shadow-sm border-0 rounded-lg overflow-hidden">
+                    <div class="module-header bg-success bg-opacity-10 p-4 text-center">
+                        <i class="fas fa-trophy fa-3x text-success"></i>
+                    </div>
+                    <div class="card-body p-4">
+                        <h5 class="card-title fw-bold mb-3">Gamificação</h5>
+                        <p class="card-text text-muted small mb-4">
+                            Ganhe pontos, desbloqueie badges e suba no ranking!
+                        </p>
+                        <a href="/gamification/" class="btn btn-sm btn-success w-100">
+                            <i class="fas fa-arrow-right me-2"></i>Acessar
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card: Usuários -->
+            <div class="col-md-6 col-lg-4">
+                <div class="module-card h-100 shadow-sm border-0 rounded-lg overflow-hidden">
+                    <div class="module-header bg-primary bg-opacity-10 p-4 text-center">
+                        <i class="fas fa-users fa-3x text-primary"></i>
+                    </div>
+                    <div class="card-body p-4">
+                        <h5 class="card-title fw-bold mb-3">Usuários</h5>
+                        <p class="card-text text-muted small mb-4">
+                            Gerencie seu perfil, preferências e informações pessoais.
+                        </p>
+                        <a href="/users/" class="btn btn-sm btn-primary w-100">
+                            <i class="fas fa-arrow-right me-2"></i>Acessar
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card: Impressão -->
+            <div class="col-md-6 col-lg-4">
+                <div class="module-card h-100 shadow-sm border-0 rounded-lg overflow-hidden">
+                    <div class="module-header bg-info bg-opacity-10 p-4 text-center">
+                        <i class="fas fa-print fa-3x text-info"></i>
+                    </div>
+                    <div class="card-body p-4">
+                        <h5 class="card-title fw-bold mb-3">Impressão</h5>
+                        <p class="card-text text-muted small mb-4">
+                            Controle impressoras, fila de impressão e status de produção.
+                        </p>
+                        <a href="/printing/" class="btn btn-sm btn-info w-100">
+                            <i class="fas fa-arrow-right me-2"></i>Acessar
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Seção de Features -->
+        <div class="row mt-5 pt-5">
+            <div class="col-lg-10 mx-auto">
+                <h2 class="text-center mb-4 fw-bold">Recursos da Plataforma</h2>
+                
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <div class="feature-box p-4 text-center rounded-lg">
+                            <i class="fas fa-check-circle fa-2x text-success mb-3"></i>
+                            <h6 class="fw-bold">100% Responsivo</h6>
+                            <p class="text-muted small">Funciona perfeitamente em qualquer dispositivo</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="feature-box p-4 text-center rounded-lg">
+                            <i class="fas fa-lock fa-2x text-primary mb-3"></i>
+                            <h6 class="fw-bold">Seguro e Confiável</h6>
+                            <p class="text-muted small">Autenticação e proteção de dados garantidas</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="feature-box p-4 text-center rounded-lg">
+                            <i class="fas fa-bolt fa-2x text-warning mb-3"></i>
+                            <h6 class="fw-bold">Super Rápido</h6>
+                            <p class="text-muted small">Otimizado para melhor performance</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- Estilos customizados -->
+<style>
+    .min-vh-100 {
+        min-height: 100vh;
+    }
+
+    .text-gradient {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    .module-card {
+        transition: all 0.3s ease;
+        border-radius: 12px;
+    }
+
+    .module-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 1.5rem 3rem rgba(0, 0, 0, 0.15) !important;
+    }
+
+    .module-header {
+        background-size: 200% 200%;
+        transition: all 0.3s ease;
+        border-radius: 12px 12px 0 0;
+    }
+
+    .module-card:hover .module-header {
+        transform: scale(1.05);
+    }
+
+    .hero-content {
+        animation: fadeInDown 0.8s ease;
+    }
+
+    .feature-box {
+        background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
+        border: 1px solid rgba(102, 126, 234, 0.1);
+        transition: all 0.3s ease;
+        border-radius: 8px;
+    }
+
+    .feature-box:hover {
+        background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+        border-color: rgba(102, 126, 234, 0.2);
+        transform: translateY(-4px);
+    }
+
+    .rounded-lg {
+        border-radius: 8px;
+    }
+
+    .btn {
+        border-radius: 6px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
+
+    .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+    }
+
+    @keyframes fadeInDown {
+        from {
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+</style>
+
+{% endblock %}

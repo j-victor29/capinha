@@ -4,6 +4,7 @@ from .views import (
     ColecaoViewSet, 
     ArteViewSet, 
     PersonalizacaoViewSet,
+    api_root_view,
     colecao_list_view,
     colecao_detail_view,
     arte_list_view,
@@ -17,6 +18,9 @@ router.register(r'artes', ArteViewSet, basename='arte')
 router.register(r'personalizacoes', PersonalizacaoViewSet, basename='personalizacao')
 
 urlpatterns = [
+    # Página inicial (API Root)
+    path('', api_root_view, name='creations-home'),
+    
     # HTML Templates
     path('colecoes/', colecao_list_view, name='colecao-list'),
     path('colecoes/<int:pk>/', colecao_detail_view, name='colecao-detail'),

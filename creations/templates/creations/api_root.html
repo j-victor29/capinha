@@ -1,0 +1,160 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}API Creations - Dashboard{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <!-- Cabeçalho da página -->
+    <div class="row mb-5">
+        <div class="col-lg-8 mx-auto">
+            <div class="text-center">
+                <h1 class="display-4 fw-bold mb-3">
+                    <i class="fas fa-palette me-2 text-primary"></i>API Creations
+                </h1>
+                <p class="lead text-muted">
+                    Explore artes, coleções e personalizações da plataforma
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cards de navegação -->
+    <div class="row g-4 mb-5">
+        
+        <!-- Card: Coleções -->
+        <div class="col-lg-4">
+            <div class="card h-100 shadow-sm border-0 hover-shadow transition">
+                <div class="card-body p-4">
+                    <div class="icon-box mb-3">
+                        <i class="fas fa-images fa-2x text-primary"></i>
+                    </div>
+                    <h5 class="card-title fw-bold mb-3">Coleções</h5>
+                    <p class="card-text text-muted small">
+                        Explore coleções de artes organizadas por tema e artista. 
+                        Cada coleção contém múltiplas artes que podem ser personalizadas.
+                    </p>
+                </div>
+                <div class="card-footer bg-light border-0 p-4">
+                    <a href="{% url 'colecao-list' %}" class="btn btn-primary btn-sm w-100">
+                        <i class="fas fa-arrow-right me-2"></i>Ver Coleções
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card: Artes -->
+        <div class="col-lg-4">
+            <div class="card h-100 shadow-sm border-0 hover-shadow transition">
+                <div class="card-body p-4">
+                    <div class="icon-box mb-3">
+                        <i class="fas fa-paint-brush fa-2x text-success"></i>
+                    </div>
+                    <h5 class="card-title fw-bold mb-3">Artes</h5>
+                    <p class="card-text text-muted small">
+                        Confira todas as artes disponíveis na plataforma. 
+                        Busque por artista, coleção ou nome e adicione personalizações.
+                    </p>
+                </div>
+                <div class="card-footer bg-light border-0 p-4">
+                    <a href="{% url 'arte-list' %}" class="btn btn-success btn-sm w-100">
+                        <i class="fas fa-arrow-right me-2"></i>Ver Artes
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card: Personalizações -->
+        <div class="col-lg-4">
+            <div class="card h-100 shadow-sm border-0 hover-shadow transition">
+                <div class="card-body p-4">
+                    <div class="icon-box mb-3">
+                        <i class="fas fa-wand-magic-sparkles fa-2x text-warning"></i>
+                    </div>
+                    <h5 class="card-title fw-bold mb-3">Personalizações</h5>
+                    <p class="card-text text-muted small">
+                        Veja as personalizações disponíveis para suas artes favoritas. 
+                        Customize cores, tamanhos e estilos de impressão.
+                    </p>
+                </div>
+                <div class="card-footer bg-light border-0 p-4">
+                    <a href="{% url 'personalizacao-list' %}" class="btn btn-warning btn-sm w-100">
+                        <i class="fas fa-arrow-right me-2"></i>Ver Personalizações
+                    </a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Seção informativa -->
+    <div class="row">
+        <div class="col-lg-8 mx-auto">
+            <div class="alert alert-info border-0 rounded-lg" role="alert">
+                <div class="d-flex">
+                    <div class="me-3">
+                        <i class="fas fa-lightbulb fa-lg text-info"></i>
+                    </div>
+                    <div>
+                        <h6 class="alert-heading fw-bold mb-2">Como começar?</h6>
+                        <p class="mb-0 small">
+                            Explore as coleções para descobrir novos designs, 
+                            consulte as artes específicas para ver mais detalhes, 
+                            e customizee suas preferências de impressão nas personalizações.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- Estilos customizados -->
+<style>
+    .hover-shadow {
+        transition: box-shadow 0.3s ease, transform 0.3s ease;
+    }
+
+    .hover-shadow:hover {
+        box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.175) !important;
+        transform: translateY(-0.5rem);
+    }
+
+    .icon-box {
+        display: inline-block;
+        width: 60px;
+        height: 60px;
+        background: linear-gradient(135deg, rgba(0, 123, 255, 0.1) 0%, rgba(0, 123, 255, 0.05) 100%);
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .card {
+        border-radius: 12px;
+    }
+
+    .card-footer {
+        border-radius: 0 0 12px 12px;
+    }
+
+    .transition {
+        transition: all 0.3s ease;
+    }
+
+    .btn {
+        border-radius: 6px;
+        font-weight: 500;
+        padding: 0.5rem 1rem;
+    }
+
+    .alert {
+        background: linear-gradient(135deg, rgba(23, 162, 184, 0.05) 0%, rgba(23, 162, 184, 0.02) 100%);
+        border-left: 4px solid #17a2b8;
+        border-radius: 8px !important;
+    }
+</style>
+
+{% endblock %}

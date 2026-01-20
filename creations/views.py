@@ -19,6 +19,19 @@ from .serializers import (
 # HTML VIEWS (Templates)
 # ============================================================================
 
+def api_root_view(request):
+    """
+    Página inicial da aplicação Creations.
+    Exibe um dashboard com links para as principais seções:
+    - Coleções
+    - Artes
+    - Personalizações
+    """
+    return render(request, 'creations/api_root.html', {
+        'title': 'API Creations - Dashboard',
+    })
+
+
 def colecao_list_view(request):
     """Exibe lista de coleções ativas."""
     colecoes = Colecao.objects.filter(ativa=True)
