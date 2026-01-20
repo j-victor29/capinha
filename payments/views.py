@@ -1,3 +1,4 @@
+from django.shortcuts import render, get_object_or_404
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -16,8 +17,8 @@ class PaymentViewSet(viewsets.ModelViewSet):
 
         if payment.status == "paid":
             return Response(
-                {"detail": "Payment already paid"},
-                status=status.HTTP_400_BAD_REQUEST,
+                {"error": "Payment already paid"},
+                status=status.HTTP_400_BAD_REQUEST
             )
 
         payment.status = "paid"
@@ -25,6 +26,15 @@ class PaymentViewSet(viewsets.ModelViewSet):
         payment.save()
 
         serializer = self.get_serializer(payment)
-        return Response(serializer.data)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
-# Create your views here.
+
+# Views HTML para templates
+def payment_list_view(request):
+    payments = Payment.objects.all().order_by('-created_at')
+    return render(request, 'payments/payment_list.html', {'payments': payments})
+
+
+def payment_detail_view(request, pk):
+    payment = get_object_or_404(Payment, pk=pk)
+    return render(request, 'payments/payment_detail.html', {'payment': payment})

@@ -1,6 +1,15 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from .views import ColecaoViewSet, ArteViewSet, PersonalizacaoViewSet
+from .views import (
+    ColecaoViewSet, 
+    ArteViewSet, 
+    PersonalizacaoViewSet,
+    colecao_list_view,
+    colecao_detail_view,
+    arte_list_view,
+    arte_detail_view,
+    personalizacao_list_view,
+)
 
 router = DefaultRouter()
 router.register(r'colecoes', ColecaoViewSet, basename='colecao')
@@ -8,5 +17,16 @@ router.register(r'artes', ArteViewSet, basename='arte')
 router.register(r'personalizacoes', PersonalizacaoViewSet, basename='personalizacao')
 
 urlpatterns = [
+    # HTML Templates
+    path('colecoes/', colecao_list_view, name='colecao-list'),
+    path('colecoes/<int:pk>/', colecao_detail_view, name='colecao-detail'),
+    path('artes/', arte_list_view, name='arte-list'),
+    path('artes/<int:pk>/', arte_detail_view, name='arte-detail'),
+    path('personalizacoes/', personalizacao_list_view, name='personalizacao-list'),
+    
+    # API REST
+    path('api/', include(router.urls)),
+    
+    # Compatibilidade com rotas antigas (sem /api/)
     path('', include(router.urls)),
 ]

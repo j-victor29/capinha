@@ -11,6 +11,7 @@ class Produto(models.Model):
     
     nome = models.CharField(max_length=200)
     descricao = models.TextField(blank=True, null=True)
+    imagem = models.ImageField(upload_to='produtos/', blank=True, null=True, help_text='Foto do produto')
     categoria = models.CharField(max_length=20, choices=CATEGORIA_CHOICES, default='capinha')
     preco_base = models.DecimalField(max_digits=10, decimal_places=2)
     estoque = models.PositiveIntegerField(default=0)

@@ -1,0 +1,149 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Personalizações{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <!-- Header -->
+    <div class="row mb-4">
+        <div class="col-md-8">
+            <h1><i class="fas fa-palette"></i> Minhas Personalizações</h1>
+            <p class="text-muted">Gerencie suas personalizações de artes</p>
+        </div>
+        <div class="col-md-4 text-end">
+            <a href="{% url 'arte-list' %}" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> Voltar às Artes
+            </a>
+        </div>
+    </div>
+
+    <!-- Filtros -->
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <div class="card bg-light">
+                <div class="card-body">
+                    <form method="get" class="row g-3">
+                        <div class="col-md-6">
+                            <input type="text" name="busca" class="form-control" 
+                                   placeholder="Buscar por texto..." 
+                                   value="{{ busca }}">
+                        </div>
+                        <div class="col-md-4">
+                            <select name="arte" class="form-select">
+                                <option value="">Todas as Artes</option>
+                                {% for arte in artes %}
+                                    <option value="{{ arte.id }}" 
+                                            {% if arte_selecionada == arte.id|stringformat:"s" %}selected{% endif %}>
+                                        {{ arte.nome }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <button type="submit" class="btn btn-primary w-100">
+                                <i class="fas fa-search"></i> Filtrar
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tabela de Personalizações -->
+    {% if personalizacoes %}
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card shadow-sm">
+                    <div class="table-responsive">
+                        <table class="table table-hover mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th style="width: 15%;">Arte</th>
+                                    <th style="width: 30%;">Texto</th>
+                                    <th style="width: 15%;">Cor</th>
+                                    <th style="width: 15%;">Fonte</th>
+                                    <th style="width: 15%;">Preço Extra</th>
+                                    <th style="width: 10%;">Data</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for personalizacao in personalizacoes %}
+                                    <tr>
+                                        <!-- Arte -->
+                                        <td>
+                                            {% if personalizacao.arte %}
+                                                <span class="badge bg-info">
+                                                    {{ personalizacao.arte.nome }}
+                                                </span>
+                                            {% else %}
+                                                <span class="badge bg-secondary">-</span>
+                                            {% endif %}
+                                        </td>
+
+                                        <!-- Texto -->
+                                        <td>
+                                            {% if personalizacao.texto %}
+                                                <small>{{ personalizacao.texto|truncatewords:5 }}</small>
+                                            {% else %}
+                                                <span class="text-muted">-</span>
+                                            {% endif %}
+                                        </td>
+
+                                        <!-- Cor -->
+                                        <td>
+                                            {% if personalizacao.cor %}
+                                                <div class="d-flex align-items-center gap-2">
+                                                    <span style="display: inline-block; width: 25px; height: 25px; background-color: {{ personalizacao.cor }}; border: 1px solid #ccc; border-radius: 3px;"></span>
+                                                    <small>{{ personalizacao.cor }}</small>
+                                                </div>
+                                            {% else %}
+                                                <span class="text-muted">-</span>
+                                            {% endif %}
+                                        </td>
+
+                                        <!-- Fonte -->
+                                        <td>
+                                            {% if personalizacao.fonte %}
+                                                <small style="font-family: {{ personalizacao.fonte }};">
+                                                    {{ personalizacao.fonte }}
+                                                </small>
+                                            {% else %}
+                                                <span class="text-muted">-</span>
+                                            {% endif %}
+                                        </td>
+
+                                        <!-- Preço Extra -->
+                                        <td>
+                                            {% if personalizacao.preco_extra > 0 %}
+                                                <span class="badge bg-success">
+                                                    R$ {{ personalizacao.preco_extra }}
+                                                </span>
+                                            {% else %}
+                                                <span class="badge bg-secondary">Grátis</span>
+                                            {% endif %}
+                                        </td>
+
+                                        <!-- Data -->
+                                        <td>
+                                            <small class="text-muted">
+                                                {{ personalizacao.criado_em|date:"d/m/y" }}
+                                            </small>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% else %}
+        <div class="alert alert-info text-center">
+            <i class="fas fa-inbox"></i>
+            <p class="mb-0">Nenhuma personalização encontrada.</p>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

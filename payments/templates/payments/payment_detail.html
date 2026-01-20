@@ -11,15 +11,7 @@
             <h1><i class="fas fa-receipt"></i> Pagamento #{{ payment.id }}</h1>
         </div>
         <div class="col-md-4 text-end">
-            {% if payment.status == 'pending' %}
-                <a href="{% url 'payment-pay' payment.id %}" class="btn btn-success">
-                    <i class="fas fa-check"></i> Marcar como Pago
-                </a>
-            {% endif %}
-            <a href="{% url 'payment-update' payment.id %}" class="btn btn-warning">
-                <i class="fas fa-edit"></i> Editar
-            </a>
-            <a href="{% url 'payment-list' %}" class="btn btn-secondary">
+            <a href="javascript:history.back()" class="btn btn-secondary">
                 <i class="fas fa-arrow-left"></i> Voltar
             </a>
         </div>
