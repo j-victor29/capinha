@@ -142,7 +142,8 @@ class UsuarioRecompensa(models.Model):
         unique_together = ('usuario', 'badge')
 
     def __str__(self):
-        return f"{self.usuario.nome} - {self.badge.nome}"
+        badge_nome = self.badge.nome if self.badge else "Sem Badge"
+        return f"{self.usuario.nome} - {badge_nome}"
 
 
 class Recompensa(models.Model):

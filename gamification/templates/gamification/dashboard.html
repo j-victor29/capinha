@@ -1,0 +1,168 @@
+{% extends "base.html" %}
+
+{% block title %}Gamificação - Capinha{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <h1 class="mb-4">
+        <i class="fas fa-trophy"></i> Dashboard de Gamificação
+    </h1>
+
+    <!-- Estatísticas Principais -->
+    <div class="row mb-5">
+        <div class="col-md-3">
+            <div class="card text-center bg-primary text-white">
+                <div class="card-body">
+                    <h3 class="card-title">{{ stats.pontos_saldo }}</h3>
+                    <p class="card-text">Pontos Atuais</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-center bg-success text-white">
+                <div class="card-body">
+                    <h3 class="card-title">{{ stats.pontos_total }}</h3>
+                    <p class="card-text">Total Acumulado</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-center bg-warning text-white">
+                <div class="card-body">
+                    <h3 class="card-title">{{ stats.badges_desbloqueados }}</h3>
+                    <p class="card-text">Badges Desbloqueados</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-center bg-info text-white">
+                <div class="card-body">
+                    <h3 class="card-title">{{ stats.posicao_ranking }}</h3>
+                    <p class="card-text">Posição no Ranking</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Nível Atual -->
+    {% if stats.nivel_atual %}
+        <div class="card mb-5">
+            <div class="card-header bg-dark">
+                <h5 class="mb-0">Seu Nível</h5>
+            </div>
+            <div class="card-body">
+                <div class="row align-items-center">
+                    <div class="col-md-3">
+                        <h2 class="text-center">
+                            <span class="badge bg-success" style="font-size: 1.5rem;">
+                                {{ stats.nivel_atual.get_numero_display }}
+                            </span>
+                        </h2>
+                    </div>
+                    <div class="col-md-9">
+                        <h4>{{ stats.nivel_atual.nome }}</h4>
+                        <p>{{ stats.nivel_atual.descricao }}</p>
+                        <p><strong>Pontos Mínimos:</strong> {{ stats.nivel_atual.pontos_minimos }}</p>
+                        <p><strong>Benefícios:</strong></p>
+                        <p>{{ stats.nivel_atual.beneficios }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+    <!-- Próximos Níveis -->
+    <div class="card mb-5">
+        <div class="card-header bg-dark">
+            <h5 class="mb-0">Progressão de Níveis</h5>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                {% for n in niveis %}
+                    <div class="col-md-12 mb-3">
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>
+                                <strong>{{ n.get_numero_display }}</strong> - {{ n.nome }}
+                            </span>
+                            <span class="text-muted">{{ n.pontos_minimos }} pontos</span>
+                        </div>
+                        <div class="progress">
+                            {% widthratio stats.pontos_saldo n.pontos_minimos 100 as progress_width %}
+                            <div class="progress-bar 
+                                {% if stats.pontos_saldo >= n.pontos_minimos %}
+                                    bg-success
+                                {% elif stats.pontos_saldo >= n.pontos_minimos|add:"-500" %}
+                                    bg-warning
+                                {% else %}
+                                    bg-danger
+                                {% endif %}" 
+                                role="progressbar" 
+                                style="width: {{ progress_width }}%"
+                                aria-valuenow="{{ stats.pontos_saldo }}" 
+                                aria-valuemin="0" 
+                                aria-valuemax="{{ n.pontos_minimos }}">
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Badges Desbloqueados -->
+    <div class="card">
+        <div class="card-header bg-dark">
+            <h5 class="mb-0">
+                <i class="fas fa-medal"></i> Seus Badges
+                <span class="badge bg-info float-end">{{ stats.badges_desbloqueados }}</span>
+            </h5>
+        </div>
+        <div class="card-body">
+            {% if badges %}
+                <div class="row">
+                    {% for item in badges %}
+                        <div class="col-md-4 mb-3">
+                            <div class="card h-100 text-center">
+                                {% if item.badge.icone %}
+                                    <img src="{{ item.badge.icone.url }}" alt="{{ item.badge.nome }}" class="card-img-top" style="max-height: 200px; object-fit: cover;">
+                                {% else %}
+                                    <div class="card-img-top bg-secondary d-flex align-items-center justify-content-center" style="height: 200px;">
+                                        <i class="fas fa-medal" style="font-size: 4rem; color: gold;"></i>
+                                    </div>
+                                {% endif %}
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ item.badge.nome }}</h5>
+                                    <p class="card-text text-muted">{{ item.badge.descricao }}</p>
+                                    <small class="text-success">
+                                        <i class="fas fa-star"></i> +{{ item.badge.pontos_recompensa }} pts
+                                    </small>
+                                    <br>
+                                    <small class="text-muted">
+                                        {{ item.data_desbloqueio|date:"d/m/Y" }}
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p class="text-muted text-center">Você ainda não desbloqueou nenhum badge.</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Links Rápidos -->
+    <div class="row mt-5">
+        <div class="col-md-6">
+            <a href="{% url 'badges-list' %}" class="btn btn-primary btn-lg btn-block w-100">
+                <i class="fas fa-medal"></i> Ver Todos os Badges
+            </a>
+        </div>
+        <div class="col-md-6">
+            <a href="{% url 'ranking-list' %}" class="btn btn-info btn-lg btn-block w-100">
+                <i class="fas fa-trophy"></i> Ver Ranking
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,4 +1,6 @@
 from django.shortcuts import get_object_or_404
+from django.views.generic import ListView, DetailView
+from django.contrib.auth.mixins import LoginRequiredMixin
 from rest_framework import viewsets, status, mixins
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -189,3 +191,31 @@ class ItemPedidoViewSet(mixins.UpdateModelMixin,
         except ValueError as e:
             return Response({'detail': str(e)}, status=status.HTTP_400_BAD_REQUEST)
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+# ===== VIEWS BASEADAS EM CLASSE PARA TEMPLATES =====
+
+class PedidoListView(LoginRequiredMixin, ListView):
+    """Lista todos os pedidos do usuário logado"""
+    model = Pedido
+    template_name = 'orders/pedido_list.html'
+    context_object_name = 'pedidos'
+    paginate_by = 10
+
+    def get_queryset(self):
+        return Pedido.objects.filter(usuario=self.request.user).order_by('-data_pedido')
+
+
+class PedidoDetailView(LoginRequiredMixin, DetailView):
+    """Detalhes de um pedido específico"""
+    model = Pedido
+    template_name = 'orders/pedido_detail.html'
+    context_object_name = 'pedido'
+
+    def get_queryset(self):
+        return Pedido.objects.filter(usuario=self.request.user)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['itens'] = self.object.itens.all()
+        return context

@@ -1,0 +1,171 @@
+{% extends "base.html" %}
+
+{% block title %}Fila de Impressão - Capinha{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row mb-4">
+        <div class="col-md-8">
+            <h1>
+                <i class="fas fa-tasks"></i> Fila de Impressão
+            </h1>
+            <p class="text-muted">Gerencie a fila de produção</p>
+        </div>
+        <div class="col-md-4 text-end">
+            <a href="{% url 'impressora-list' %}" class="btn btn-secondary">
+                <i class="fas fa-print"></i> Voltar para Impressoras
+            </a>
+        </div>
+    </div>
+
+    <!-- Estatísticas da Fila -->
+    <div class="row mb-4">
+        <div class="col-md-4">
+            <div class="card text-center bg-warning text-white">
+                <div class="card-body">
+                    <h3>{{ aguardando }}</h3>
+                    <p>Aguardando</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card text-center bg-info text-white">
+                <div class="card-body">
+                    <h3>{{ imprimindo }}</h3>
+                    <p>Imprimindo</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card text-center bg-danger text-white">
+                <div class="card-body">
+                    <h3>{{ erro }}</h3>
+                    <p>Erros</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Fila -->
+    {% if fila %}
+        <div class="card">
+            <div class="card-header bg-dark">
+                <h5 class="mb-0">Fila Ativa</h5>
+            </div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th style="width: 80px;">Posição</th>
+                                <th>Pedido</th>
+                                <th>Impressora</th>
+                                <th>Status</th>
+                                <th>Prioridade</th>
+                                <th>Criado em</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in fila %}
+                                <tr class="{% if item.status == 'erro' %}table-danger{% elif item.status == 'imprimindo' %}table-info{% elif item.status == 'aguardando' %}table-warning{% endif %}">
+                                    <td>
+                                        <strong>#{{ forloop.counter }}</strong>
+                                    </td>
+                                    <td>
+                                        <a href="/orders/{{ item.pedido.id }}/">
+                                            Pedido #{{ item.pedido.id }}
+                                        </a>
+                                    </td>
+                                    <td>
+                                        {% if item.impressora %}
+                                            <a href="{% url 'impressora-detail' item.impressora.id %}">
+                                                {{ item.impressora.nome }}
+                                            </a>
+                                        {% else %}
+                                            <em class="text-muted">-</em>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if item.status == 'aguardando' %}
+                                            <span class="badge bg-warning">Aguardando</span>
+                                        {% elif item.status == 'imprimindo' %}
+                                            <span class="badge bg-info">Imprimindo</span>
+                                        {% elif item.status == 'concluido' %}
+                                            <span class="badge bg-success">Concluído</span>
+                                        {% elif item.status == 'erro' %}
+                                            <span class="badge bg-danger">Erro</span>
+                                        {% elif item.status == 'cancelado' %}
+                                            <span class="badge bg-secondary">Cancelado</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if item.prioridade == 0 %}
+                                            <i class="fas fa-arrow-up" style="color: red;"></i> Alta
+                                        {% elif item.prioridade < 50 %}
+                                            <i class="fas fa-minus" style="color: orange;"></i> Normal
+                                        {% else %}
+                                            <i class="fas fa-arrow-down" style="color: green;"></i> Baixa
+                                        {% endif %}
+                                    </td>
+                                    <td>{{ item.criado_em|date:"d/m/Y H:i" }}</td>
+                                    <td>
+                                        {% if item.observacoes %}
+                                            <button class="btn btn-sm btn-info" data-bs-toggle="tooltip" title="{{ item.observacoes }}">
+                                                <i class="fas fa-sticky-note"></i>
+                                            </button>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Paginação -->
+        {% if is_paginated %}
+            <nav aria-label="Paginação" class="mt-4">
+                <ul class="pagination justify-content-center">
+                    {% if page_obj.has_previous %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page=1">Primeira</a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Anterior</a>
+                        </li>
+                    {% endif %}
+
+                    <li class="page-item active">
+                        <span class="page-link">Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}</span>
+                    </li>
+
+                    {% if page_obj.has_next %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ page_obj.next_page_number }}">Próxima</a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">Última</a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </nav>
+        {% endif %}
+    {% else %}
+        <div class="alert alert-info">
+            <i class="fas fa-info-circle"></i> A fila está vazia! Todos os pedidos foram concluídos.
+        </div>
+    {% endif %}
+</div>
+
+<script>
+    // Inicializar tooltips
+    document.addEventListener('DOMContentLoaded', function() {
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl)
+        })
+    });
+</script>
+{% endblock %}
